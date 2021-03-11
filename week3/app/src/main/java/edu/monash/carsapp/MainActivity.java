@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String SAVED_FILENAME = "CAP_APP_WEEK_3";
+    private final String SAVED_FILENAME = "CAR_APP_WEEK_3";
 
     private Button addNewCarBtn;
     private EditText makerEditText;
