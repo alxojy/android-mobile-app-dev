@@ -13,6 +13,7 @@ import android.util.Log;
 public class MainActivity extends AppCompatActivity {
 
     private final String SAVED_FILENAME = "CAR_APP_WEEK_3";
+    private final String car_maker_file = "carMakerFile";
 
     private Button addNewCarBtn;
     private EditText makerEditText;
@@ -67,21 +68,31 @@ public class MainActivity extends AppCompatActivity {
     // restore view data after rotating device
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        makerEditText.setText(savedInstanceState.getString(MAKER_STR));
+        /* makerEditText.setText(savedInstanceState.getString(MAKER_STR));
         modelEditText.setText(savedInstanceState.getString(MODEL_STR));
         yearEditText.setText(savedInstanceState.getString(YEAR_STR));
         colorEditText.setText(savedInstanceState.getString(COLOR_STR));
         seatsEditText.setText(savedInstanceState.getString(SEATS_STR));
         priceEditText.setText(savedInstanceState.getString(PRICE_STR));
-        addressEditText.setText(savedInstanceState.getString(ADDRESS_STR));
+        addressEditText.setText(savedInstanceState.getString(ADDRESS_STR)); */
+        makerEditText.setText("");
+        modelEditText.setText("");
+        yearEditText.setText("");
+        colorEditText.setText("");
+        seatsEditText.setText("");
+        priceEditText.setText("");
+        addressEditText.setText("");
     }
 
     // save last added car
     private void onSaveSharedPreferences() {
         SharedPreferences sharedPref = getSharedPreferences(SAVED_FILENAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor sharedPrefEditor = sharedPref.edit();
+        SharedPreferences sharedPref2 = getSharedPreferences(car_maker_file, Context.MODE_PRIVATE);
 
-        sharedPrefEditor.putString(MAKER_STR, makerEditText.getText().toString());
+        SharedPreferences.Editor sharedPrefEditor = sharedPref.edit();
+        SharedPreferences.Editor sharedPrefEditor2 = sharedPref2.edit();
+
+        sharedPrefEditor2.putString(MAKER_STR, makerEditText.getText().toString());
         sharedPrefEditor.putString(MODEL_STR, modelEditText.getText().toString());
         sharedPrefEditor.putString(YEAR_STR, yearEditText.getText().toString());
         sharedPrefEditor.putString(COLOR_STR, colorEditText.getText().toString());
@@ -90,13 +101,15 @@ public class MainActivity extends AppCompatActivity {
         sharedPrefEditor.putString(ADDRESS_STR, addressEditText.getText().toString());
 
         sharedPrefEditor.apply();
+        sharedPrefEditor2.apply();
     }
 
     // restore last added car when reopening app
     private void onRestoreSharedPreferences() {
         SharedPreferences sharedPref = getSharedPreferences(SAVED_FILENAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPref2 = getSharedPreferences(car_maker_file, Context.MODE_PRIVATE);
 
-        makerEditText.setText(sharedPref.getString(MAKER_STR, ""));
+        makerEditText.setText(sharedPref2.getString(MAKER_STR, ""));
         modelEditText.setText(sharedPref.getString(MODEL_STR, ""));
         yearEditText.setText(sharedPref.getString(YEAR_STR, ""));
         colorEditText.setText(sharedPref.getString(COLOR_STR, ""));
@@ -111,6 +124,12 @@ public class MainActivity extends AppCompatActivity {
         onSaveSharedPreferences();
     }
 
+    // add new car and save it as persistent data
+    public void onClickLoadButton(View view) {
+        SharedPreferences sharedPref = getSharedPreferences(car_maker_file, Context.MODE_PRIVATE);
+        makerEditText.setText(sharedPref.getString(MAKER_STR, ""));
+    }
+
     // clears all fields & removes value of the last car added
     public void onClickClearAllButton(View view) {
         makerEditText.setText("");
@@ -121,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         priceEditText.setText("");
         addressEditText.setText("");
 
+        getSharedPreferences(car_maker_file, Context.MODE_PRIVATE).edit().clear().commit();
         getSharedPreferences(SAVED_FILENAME, Context.MODE_PRIVATE).edit().clear().commit();
     }
 }
