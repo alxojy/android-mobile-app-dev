@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private final String COLOR_STR = "color";
     private final String SEATS_STR = "seats";
     private final String PRICE_STR = "price";
-    private final String ADDRESS_STR = "address";
 
     private Button addNewCarBtn;
     private EditText makerEditText;
@@ -39,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText colorEditText;
     private EditText seatsEditText;
     private EditText priceEditText;
-    private EditText addressEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         colorEditText = (EditText)findViewById(R.id.colorEditText);
         seatsEditText = (EditText)findViewById(R.id.seatsEditText);
         priceEditText = (EditText)findViewById(R.id.priceEditText);
-        addressEditText = (EditText)findViewById(R.id.addressEditText);
 
         onRestoreSharedPreferences();
 
@@ -81,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
             String color = sT.nextToken();
             String seats = sT.nextToken();
             String price = sT.nextToken();
-            String address = sT.nextToken();
 
             // update UI
             makerEditText.setText(maker);
@@ -90,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
             colorEditText.setText(color);
             seatsEditText.setText(seats);
             priceEditText.setText(price);
-            addressEditText.setText(address);
         }
     }
 
@@ -105,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         outState.putString(COLOR_STR, colorEditText.getText().toString());
         outState.putString(SEATS_STR, seatsEditText.getText().toString());
         outState.putString(PRICE_STR, priceEditText.getText().toString());
-        outState.putString(ADDRESS_STR, addressEditText.getText().toString());
     }
 
     // restore view data after rotating device
@@ -117,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
         colorEditText.setText(savedInstanceState.getString(COLOR_STR));
         seatsEditText.setText(savedInstanceState.getString(SEATS_STR));
         priceEditText.setText(savedInstanceState.getString(PRICE_STR));
-        addressEditText.setText(savedInstanceState.getString(ADDRESS_STR));
     }
 
     // save last added car
@@ -134,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
         sharedPrefEditor.putString(COLOR_STR, colorEditText.getText().toString());
         sharedPrefEditor.putString(SEATS_STR, seatsEditText.getText().toString());
         sharedPrefEditor.putString(PRICE_STR, priceEditText.getText().toString());
-        sharedPrefEditor.putString(ADDRESS_STR, addressEditText.getText().toString());
 
         sharedPrefEditor.apply();
         sharedPrefEditor2.apply();
@@ -151,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
         colorEditText.setText(sharedPref.getString(COLOR_STR, ""));
         seatsEditText.setText(sharedPref.getString(SEATS_STR, ""));
         priceEditText.setText(sharedPref.getString(PRICE_STR, ""));
-        addressEditText.setText(sharedPref.getString(ADDRESS_STR, ""));
     }
 
     // add new car and save it as persistent data
@@ -174,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
         colorEditText.setText("");
         seatsEditText.setText("");
         priceEditText.setText("");
-        addressEditText.setText("");
 
         getSharedPreferences(car_maker_file, Context.MODE_PRIVATE).edit().clear().commit();
         getSharedPreferences(SAVED_FILENAME, Context.MODE_PRIVATE).edit().clear().commit();

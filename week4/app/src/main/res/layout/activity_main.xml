@@ -118,18 +118,6 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/priceTextView"
             app:layout_constraintStart_toStartOf="@+id/edit_text_guideline" />
 
-        <EditText
-            android:id="@+id/addressEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:ems="15"
-            android:hint="Address"
-            android:inputType="textPersonName"
-            android:textSize="15sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/addressTextView"
-            app:layout_constraintStart_toStartOf="@+id/edit_text_guideline" />
-
         <ImageView
             android:id="@+id/imageView8"
             android:layout_width="match_parent"
@@ -209,16 +197,6 @@
             android:text="Price"
             app:layout_constraintStart_toStartOf="@+id/field_guideline"
             app:layout_constraintTop_toTopOf="@+id/guideline6" />
-
-        <TextView
-            android:id="@+id/addressTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:text="Address"
-            app:layout_constraintStart_toStartOf="@+id/field_guideline"
-            app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/field_guideline"
