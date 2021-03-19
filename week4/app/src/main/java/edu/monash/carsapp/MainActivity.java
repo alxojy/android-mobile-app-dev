@@ -1,6 +1,13 @@
 package edu.monash.carsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -9,6 +16,7 @@ import android.os.Bundle;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +56,42 @@ public class MainActivity extends AppCompatActivity {
         addressEditText = (EditText)findViewById(R.id.addressEditText);
 
         onRestoreSharedPreferences();
+
+        // request permission to access SMS
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_SMS}, 0);
+        // create and instantiate local broadcast receiver
+        MyBroadCastReceiver myBroadCastReceiver = new MyBroadCastReceiver();
+        // register broadcast handler with intent filter
+        registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.SMS_FILTER));
+    }
+
+    class MyBroadCastReceiver extends BroadcastReceiver {
+         // 'onReceive' will get executed every time class SMSReceive sends a broadcast
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // retrieve the message from the intent
+            String msg = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
+            Toast.makeText(getApplicationContext(), msg, 10).show();
+
+            // String Tokenizer is used to parse the incoming message
+            StringTokenizer sT = new StringTokenizer(msg, ";");
+            String maker = sT.nextToken();
+            String model = sT.nextToken();
+            String year = sT.nextToken();
+            String color = sT.nextToken();
+            String seats = sT.nextToken();
+            String price = sT.nextToken();
+            String address = sT.nextToken();
+
+            // update UI
+            makerEditText.setText(maker);
+            modelEditText.setText(model);
+            yearEditText.setText(year);
+            colorEditText.setText(color);
+            seatsEditText.setText(seats);
+            priceEditText.setText(price);
+            addressEditText.setText(address);
+        }
     }
 
     // save view data when rotating device
@@ -67,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
     // restore view data after rotating device
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        /*
         makerEditText.setText(savedInstanceState.getString(MAKER_STR));
         modelEditText.setText(savedInstanceState.getString(MODEL_STR));
         yearEditText.setText(savedInstanceState.getString(YEAR_STR));
@@ -75,15 +118,6 @@ public class MainActivity extends AppCompatActivity {
         seatsEditText.setText(savedInstanceState.getString(SEATS_STR));
         priceEditText.setText(savedInstanceState.getString(PRICE_STR));
         addressEditText.setText(savedInstanceState.getString(ADDRESS_STR));
-        */
-        // stop activity from restoring data when changing orientation
-        makerEditText.setText("");
-        modelEditText.setText("");
-        yearEditText.setText("");
-        colorEditText.setText("");
-        seatsEditText.setText("");
-        priceEditText.setText("");
-        addressEditText.setText("");
     }
 
     // save last added car
