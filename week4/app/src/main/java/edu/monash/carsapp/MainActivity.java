@@ -21,7 +21,6 @@ import java.util.StringTokenizer;
 public class MainActivity extends AppCompatActivity {
 
     private final String SAVED_FILENAME = "CAR_APP_WEEK_3";
-    private final String car_maker_file = "carMakerFile";
 
     // key values to save in SharedPreferences file
     private final String MAKER_STR = "maker";
@@ -118,10 +117,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences(SAVED_FILENAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedPrefEditor = sharedPref.edit();
 
-        SharedPreferences sharedPref2 = getSharedPreferences(car_maker_file, Context.MODE_PRIVATE);
-        SharedPreferences.Editor sharedPrefEditor2 = sharedPref2.edit();
-
-        sharedPrefEditor2.putString(MAKER_STR, makerEditText.getText().toString());
+        sharedPrefEditor.putString(MAKER_STR, makerEditText.getText().toString());
         sharedPrefEditor.putString(MODEL_STR, modelEditText.getText().toString());
         sharedPrefEditor.putString(YEAR_STR, yearEditText.getText().toString());
         sharedPrefEditor.putString(COLOR_STR, colorEditText.getText().toString());
@@ -129,15 +125,13 @@ public class MainActivity extends AppCompatActivity {
         sharedPrefEditor.putString(PRICE_STR, priceEditText.getText().toString());
 
         sharedPrefEditor.apply();
-        sharedPrefEditor2.apply();
     }
 
     // restore last added car when reopening app
     private void onRestoreSharedPreferences() {
         SharedPreferences sharedPref = getSharedPreferences(SAVED_FILENAME, Context.MODE_PRIVATE);
-        SharedPreferences sharedPref2 = getSharedPreferences(car_maker_file, Context.MODE_PRIVATE);
 
-        makerEditText.setText(sharedPref2.getString(MAKER_STR, ""));
+        makerEditText.setText(sharedPref.getString(MAKER_STR, ""));
         modelEditText.setText(sharedPref.getString(MODEL_STR, ""));
         yearEditText.setText(sharedPref.getString(YEAR_STR, ""));
         colorEditText.setText(sharedPref.getString(COLOR_STR, ""));
@@ -151,12 +145,6 @@ public class MainActivity extends AppCompatActivity {
         onSaveSharedPreferences();
     }
 
-    // add new car and save it as persistent data
-    public void onClickLoadButton(View view) {
-        SharedPreferences sharedPref = getSharedPreferences(car_maker_file, Context.MODE_PRIVATE);
-        makerEditText.setText(sharedPref.getString(MAKER_STR, ""));
-    }
-
     // clears all fields & removes value of the last car added
     public void onClickClearAllButton(View view) {
         makerEditText.setText("");
@@ -166,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
         seatsEditText.setText("");
         priceEditText.setText("");
 
-        getSharedPreferences(car_maker_file, Context.MODE_PRIVATE).edit().clear().commit();
         getSharedPreferences(SAVED_FILENAME, Context.MODE_PRIVATE).edit().clear().commit();
     }
 }
