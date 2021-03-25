@@ -20,7 +20,7 @@ import java.util.StringTokenizer;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final String SAVED_FILENAME = "CAR_APP_WEEK_3";
+    private final String SAVED_FILENAME = "CAR_APP_WEEK_4";
 
     // key values to save in SharedPreferences file
     private final String MAKER_STR = "maker";
@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             // retrieve the message from the intent
             String msg = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
-            Toast.makeText(getApplicationContext(), msg, 10).show();
 
             // String Tokenizer is used to parse the incoming message
             StringTokenizer sT = new StringTokenizer(msg, ";");
@@ -83,7 +82,14 @@ public class MainActivity extends AppCompatActivity {
             modelEditText.setText(model);
             yearEditText.setText(year);
             colorEditText.setText(color);
-            seatsEditText.setText(seats);
+            if (Integer.parseInt(seats) < 4 || Integer.parseInt(seats) > 8) {
+                seatsEditText.setText("");
+                Toast.makeText(getApplicationContext(), "Error: not in range " + msg, 10).show();
+            } else {
+                seatsEditText.setText(seats);
+                Toast.makeText(getApplicationContext(), msg, 10).show();
+            }
+
             priceEditText.setText(price);
         }
     }

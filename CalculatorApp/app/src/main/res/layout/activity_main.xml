@@ -6,8 +6,7 @@
              android:layout_marginLeft="15dp"
              android:layout_marginRight="15dp">
 
-    <TableRow  android:minHeight="60dp">
-
+    <TableRow  android:minHeight="20dp">
         <TextView
             android:id="@+id/resultScreen"
             android:layout_height="match_parent"
@@ -16,22 +15,20 @@
             android:textColor="@android:color/black"/>
     </TableRow>
 
-    <TableRow  android:minHeight="60dp">
-
+    <TableRow  android:minHeight="20dp">
         <TextView
             android:id="@+id/InterScreen"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="bottom"
-            android:lines="2"
-            android:maxLines="2"
+            android:lines="1"
+            android:maxLines="1"
             android:textSize="25sp"
             android:textColor="@color/colorPrimaryDark"/>
     </TableRow>
 
 
-
-    <TableRow  android:minHeight="60dp">
+    <TableRow  android:minHeight="45dp">
 
         <Button
             android:id="@+id/buttonSeven"
@@ -67,7 +64,7 @@
     </TableRow>
 
 
-    <TableRow android:minHeight="60dp">
+    <TableRow android:minHeight="45dp">
         <Button
             android:id="@+id/buttonFour"
             android:layout_width="wrap_content"
@@ -101,7 +98,7 @@
             android:textSize="20sp" />
     </TableRow>
 
-    <TableRow android:minHeight="60dp">
+    <TableRow android:minHeight="45dp">
         <Button
             android:id="@+id/buttonOne"
             android:layout_width="wrap_content"
@@ -135,7 +132,7 @@
             android:textSize="20sp" />
     </TableRow>
 
-    <TableRow android:minHeight="60dp">
+    <TableRow android:minHeight="45dp">
         <Button
             android:id="@+id/buttonDecimal"
             android:layout_width="wrap_content"
@@ -169,14 +166,21 @@
             android:textSize="20sp" />
     </TableRow>
 
-    <TableRow android:minHeight="60dp">
+    <TableRow android:minHeight="45dp">
         <Button
             android:id="@+id/buttonClear"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:onClick="buttonClearClick"
             android:text="C"
+            android:textSize="20sp" />
 
+        <Button
+            android:id="@+id/buttonPower"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:onClick="buttonPowerClick"
+            android:text="^2"
             android:textSize="20sp" />
     </TableRow>
 </TableLayout>

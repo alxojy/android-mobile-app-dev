@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
-
+import java.lang.Math;
 import java.text.DecimalFormat;
 
 
@@ -69,6 +69,13 @@ public class MainActivity extends AppCompatActivity {
             }
             interScreen.setText("");
         }
+    }
+
+    public void buttonPowerClick(View v) {
+        valueOne = Double.parseDouble(interScreen.getText().toString());
+        resultScreen.setText(decimalFormat.format(Math.pow(valueOne, 2)));
+        interScreen.setText("");
+        valueOne = Double.NaN;
     }
 
     public void buttonEqualClick(View v) {
