@@ -24,6 +24,10 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import java.util.StringTokenizer;
 
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import java.util.ArrayList;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -51,11 +55,16 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton fab;
 
+    ArrayList<String> listItems = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
+    private ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_main);
 
+        // textfields
         makerEditText = (EditText)findViewById(R.id.makerEditText);
         modelEditText = (EditText)findViewById(R.id.modelEditText);
         yearEditText = (EditText)findViewById(R.id.yearEditText);
@@ -76,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(new MyNavigationListener());
 
+        // attach listener to FAB when clicked
         fab  = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +93,10 @@ public class MainActivity extends AppCompatActivity {
                 addNewCar();
             }
         });
+
+        listView =  findViewById(R.id.listView);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
+        listView.setAdapter(adapter);
 
         // restore saved preferences
         onRestoreSharedPreferences();
@@ -95,36 +109,12 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.SMS_FILTER));
     }
 
+    // add new car to listItems
     private void addNewCar() {
         Toast.makeText(getApplicationContext(), "We added a new car: " + makerEditText.getText().toString(), 10).show();
+        listItems.add(makerEditText.getText().toString() + " | " + modelEditText.getText().toString());
+        adapter.notifyDataSetChanged();
         onSaveSharedPreferences();
-    }
-
-    // save last added car
-    private void onSaveSharedPreferences() {
-        SharedPreferences sharedPref = getSharedPreferences(SAVED_FILENAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor sharedPrefEditor = sharedPref.edit();
-
-        sharedPrefEditor.putString(MAKER_STR, makerEditText.getText().toString());
-        sharedPrefEditor.putString(MODEL_STR, modelEditText.getText().toString());
-        sharedPrefEditor.putString(YEAR_STR, yearEditText.getText().toString());
-        sharedPrefEditor.putString(COLOR_STR, colorEditText.getText().toString());
-        sharedPrefEditor.putString(SEATS_STR, seatsEditText.getText().toString());
-        sharedPrefEditor.putString(PRICE_STR, priceEditText.getText().toString());
-
-        sharedPrefEditor.apply();
-    }
-
-    // restore last added car when reopening app
-    private void onRestoreSharedPreferences() {
-        SharedPreferences sharedPref = getSharedPreferences(SAVED_FILENAME, Context.MODE_PRIVATE);
-
-        makerEditText.setText(sharedPref.getString(MAKER_STR, ""));
-        modelEditText.setText(sharedPref.getString(MODEL_STR, ""));
-        yearEditText.setText(sharedPref.getString(YEAR_STR, ""));
-        colorEditText.setText(sharedPref.getString(COLOR_STR, ""));
-        seatsEditText.setText(sharedPref.getString(SEATS_STR, ""));
-        priceEditText.setText(sharedPref.getString(PRICE_STR, ""));
     }
 
     // clears all fields & removes value of the last car added
@@ -152,6 +142,33 @@ public class MainActivity extends AppCompatActivity {
             clearAll();
         }
         return true;
+    }
+
+    // save last added car
+    private void onSaveSharedPreferences() {
+        SharedPreferences sharedPref = getSharedPreferences(SAVED_FILENAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor sharedPrefEditor = sharedPref.edit();
+
+        sharedPrefEditor.putString(MAKER_STR, makerEditText.getText().toString());
+        sharedPrefEditor.putString(MODEL_STR, modelEditText.getText().toString());
+        sharedPrefEditor.putString(YEAR_STR, yearEditText.getText().toString());
+        sharedPrefEditor.putString(COLOR_STR, colorEditText.getText().toString());
+        sharedPrefEditor.putString(SEATS_STR, seatsEditText.getText().toString());
+        sharedPrefEditor.putString(PRICE_STR, priceEditText.getText().toString());
+
+        sharedPrefEditor.apply();
+    }
+
+    // restore last added car when reopening app
+    private void onRestoreSharedPreferences() {
+        SharedPreferences sharedPref = getSharedPreferences(SAVED_FILENAME, Context.MODE_PRIVATE);
+
+        makerEditText.setText(sharedPref.getString(MAKER_STR, ""));
+        modelEditText.setText(sharedPref.getString(MODEL_STR, ""));
+        yearEditText.setText(sharedPref.getString(YEAR_STR, ""));
+        colorEditText.setText(sharedPref.getString(COLOR_STR, ""));
+        seatsEditText.setText(sharedPref.getString(SEATS_STR, ""));
+        priceEditText.setText(sharedPref.getString(PRICE_STR, ""));
     }
 
     class MyBroadCastReceiver extends BroadcastReceiver {
@@ -193,10 +210,14 @@ public class MainActivity extends AppCompatActivity {
                     addNewCar();
                     break;
                 case R.id.remove_last_menu:
-                    // do something
+                    if (listItems.size() > 0) {
+                        listItems.remove(listItems.size()-1);
+                        adapter.notifyDataSetChanged();
+                    }
                     break;
                 case R.id.remove_all_menu:
-                    // do something
+                    listItems.clear();
+                    adapter.notifyDataSetChanged();
                     break;
             }
 
