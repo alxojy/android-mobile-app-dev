@@ -1,7 +1,11 @@
 package edu.monash.carsapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -13,14 +17,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.view.View;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import java.util.StringTokenizer;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+
 public class MainActivity extends AppCompatActivity {
 
-    private final String SAVED_FILENAME = "CAR_APP_WEEK_4";
+    private final String SAVED_FILENAME = "CAR_APP_WEEK_5";
 
     // key values to save in SharedPreferences file
     private final String MAKER_STR = "maker";
@@ -30,20 +40,22 @@ public class MainActivity extends AppCompatActivity {
     private final String SEATS_STR = "seats";
     private final String PRICE_STR = "price";
 
-    private Button addNewCarBtn;
     private EditText makerEditText;
     private EditText modelEditText;
     private EditText yearEditText;
     private EditText colorEditText;
     private EditText seatsEditText;
     private EditText priceEditText;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    Toolbar toolbar;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_drawer_main);
 
-        addNewCarBtn = (Button)findViewById(R.id.addBtn);
         makerEditText = (EditText)findViewById(R.id.makerEditText);
         modelEditText = (EditText)findViewById(R.id.modelEditText);
         yearEditText = (EditText)findViewById(R.id.yearEditText);
@@ -51,6 +63,28 @@ public class MainActivity extends AppCompatActivity {
         seatsEditText = (EditText)findViewById(R.id.seatsEditText);
         priceEditText = (EditText)findViewById(R.id.priceEditText);
 
+        toolbar = findViewById(R.id.toolbar);
+        navigationView = findViewById(R.id.nav_view);
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        setSupportActionBar(toolbar);
+
+        // hook drawer & toolbar
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(new MyNavigationListener());
+
+        fab  = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewCar();
+            }
+        });
+
+        // restore saved preferences
         onRestoreSharedPreferences();
 
         // request permission to access SMS
@@ -61,61 +95,9 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.SMS_FILTER));
     }
 
-    class MyBroadCastReceiver extends BroadcastReceiver {
-         // 'onReceive' will get executed every time class SMSReceive sends a broadcast
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // retrieve the message from the intent
-            String msg = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
-
-            // String Tokenizer is used to parse the incoming message
-            StringTokenizer sT = new StringTokenizer(msg, ";");
-            String maker = sT.nextToken();
-            String model = sT.nextToken();
-            String year = sT.nextToken();
-            String color = sT.nextToken();
-            String seats = sT.nextToken();
-            String price = sT.nextToken();
-
-            // update UI
-            makerEditText.setText(maker);
-            modelEditText.setText(model);
-            yearEditText.setText(year);
-            colorEditText.setText(color);
-            if (Integer.parseInt(seats) < 4 || Integer.parseInt(seats) > 8) {
-                seatsEditText.setText("");
-                Toast.makeText(getApplicationContext(), "Error: not in range " + msg, 10).show();
-            } else {
-                seatsEditText.setText(seats);
-                Toast.makeText(getApplicationContext(), msg, 10).show();
-            }
-
-            priceEditText.setText(price);
-        }
-    }
-
-    // save view data when rotating device
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putString(MAKER_STR, makerEditText.getText().toString());
-        outState.putString(MODEL_STR, modelEditText.getText().toString());
-        outState.putString(YEAR_STR, yearEditText.getText().toString());
-        outState.putString(COLOR_STR, colorEditText.getText().toString());
-        outState.putString(SEATS_STR, seatsEditText.getText().toString());
-        outState.putString(PRICE_STR, priceEditText.getText().toString());
-    }
-
-    // restore view data after rotating device
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        makerEditText.setText(savedInstanceState.getString(MAKER_STR));
-        modelEditText.setText(savedInstanceState.getString(MODEL_STR));
-        yearEditText.setText(savedInstanceState.getString(YEAR_STR));
-        colorEditText.setText(savedInstanceState.getString(COLOR_STR));
-        seatsEditText.setText(savedInstanceState.getString(SEATS_STR));
-        priceEditText.setText(savedInstanceState.getString(PRICE_STR));
+    private void addNewCar() {
+        Toast.makeText(getApplicationContext(), "We added a new car: " + makerEditText.getText().toString(), 10).show();
+        onSaveSharedPreferences();
     }
 
     // save last added car
@@ -145,14 +127,8 @@ public class MainActivity extends AppCompatActivity {
         priceEditText.setText(sharedPref.getString(PRICE_STR, ""));
     }
 
-    // add new car and save it as persistent data
-    public void onClickAddButton(View view) {
-        Toast.makeText(getApplicationContext(), "We added a new car: " + makerEditText.getText().toString(), 10).show();
-        onSaveSharedPreferences();
-    }
-
     // clears all fields & removes value of the last car added
-    public void onClickClearAllButton(View view) {
+    public void clearAll() {
         makerEditText.setText("");
         modelEditText.setText("");
         yearEditText.setText("");
@@ -161,5 +137,73 @@ public class MainActivity extends AppCompatActivity {
         priceEditText.setText("");
 
         getSharedPreferences(SAVED_FILENAME, Context.MODE_PRIVATE).edit().clear().commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id=item.getItemId();
+        if (id == R.id.clear) {
+            clearAll();
+        }
+        return true;
+    }
+
+    class MyBroadCastReceiver extends BroadcastReceiver {
+        // 'onReceive' will get executed every time class SMSReceive sends a broadcast
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // retrieve the message from the intent
+            String msg = intent.getStringExtra(SMSReceiver.SMS_MSG_KEY);
+
+            // String Tokenizer is used to parse the incoming message
+            StringTokenizer sT = new StringTokenizer(msg, ";");
+            String maker = sT.nextToken();
+            String model = sT.nextToken();
+            String year = sT.nextToken();
+            String color = sT.nextToken();
+            String seats = sT.nextToken();
+            String price = sT.nextToken();
+
+            // update UI
+            makerEditText.setText(maker);
+            modelEditText.setText(model);
+            yearEditText.setText(year);
+            colorEditText.setText(color);
+            seatsEditText.setText(seats);
+            priceEditText.setText(price);
+
+            Toast.makeText(getApplicationContext(), msg, 10).show();
+        }
+    }
+
+    class MyNavigationListener implements NavigationView.OnNavigationItemSelectedListener {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            // get the id of the selected item
+            int id = item.getItemId();
+
+            switch (id) {
+                case R.id.add_car_menu:
+                    addNewCar();
+                    break;
+                case R.id.remove_last_menu:
+                    // do something
+                    break;
+                case R.id.remove_all_menu:
+                    // do something
+                    break;
+            }
+
+            // close the drawer
+            drawerLayout.closeDrawers();
+            // tell the OS
+            return true;
+        }
     }
 }
