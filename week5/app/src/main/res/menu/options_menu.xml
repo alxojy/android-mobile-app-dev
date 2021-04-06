@@ -5,4 +5,8 @@
         android:id="@+id/clear"
         android:title="Clear" />
 
+    <item
+        android:id="@+id/total"
+        android:title="Total cars" />
+
 </menu>

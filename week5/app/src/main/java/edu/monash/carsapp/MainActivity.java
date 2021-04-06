@@ -12,14 +12,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.view.View;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import java.util.StringTokenizer;
@@ -30,7 +28,6 @@ import java.util.ArrayList;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_main);
 
-        // textfields
+        // text fields
         makerEditText = (EditText)findViewById(R.id.makerEditText);
         modelEditText = (EditText)findViewById(R.id.modelEditText);
         yearEditText = (EditText)findViewById(R.id.yearEditText);
@@ -111,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     // add new car to listItems
     private void addNewCar() {
-        Toast.makeText(getApplicationContext(), "We added a new car: " + makerEditText.getText().toString(), 10).show();
+        Toast.makeText(getApplicationContext(), "We added a new car: " + makerEditText.getText().toString(), Toast.LENGTH_LONG).show();
         listItems.add(makerEditText.getText().toString() + " | " + modelEditText.getText().toString());
         adapter.notifyDataSetChanged();
         onSaveSharedPreferences();
@@ -138,10 +135,47 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id=item.getItemId();
-        if (id == R.id.clear) {
-            clearAll();
+        switch (id) {
+            case R.id.clear:
+                clearAll();
+                break;
+            case R.id.total:
+                Toast.makeText(getApplicationContext(), "Total car(s): " + listItems.size(), Toast.LENGTH_LONG).show();
+                break;
         }
         return true;
+    }
+
+    class MyNavigationListener implements NavigationView.OnNavigationItemSelectedListener {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            // get the id of the selected item
+            int id = item.getItemId();
+
+            switch (id) {
+                case R.id.add_car_menu:
+                    addNewCar();
+                    break;
+                case R.id.remove_last_menu:
+                    if (listItems.size() > 0) {
+                        listItems.remove(listItems.size()-1);
+                        adapter.notifyDataSetChanged();
+                    }
+                    break;
+                case R.id.remove_all_menu:
+                    listItems.clear();
+                    adapter.notifyDataSetChanged();
+                    break;
+                case R.id.close_menu:
+                    finish();
+                    break;
+            }
+
+            // close the drawer
+            drawerLayout.closeDrawers();
+            // tell the OS
+            return true;
+        }
     }
 
     // save last added car
@@ -195,36 +229,7 @@ public class MainActivity extends AppCompatActivity {
             seatsEditText.setText(seats);
             priceEditText.setText(price);
 
-            Toast.makeText(getApplicationContext(), msg, 10).show();
-        }
-    }
-
-    class MyNavigationListener implements NavigationView.OnNavigationItemSelectedListener {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            // get the id of the selected item
-            int id = item.getItemId();
-
-            switch (id) {
-                case R.id.add_car_menu:
-                    addNewCar();
-                    break;
-                case R.id.remove_last_menu:
-                    if (listItems.size() > 0) {
-                        listItems.remove(listItems.size()-1);
-                        adapter.notifyDataSetChanged();
-                    }
-                    break;
-                case R.id.remove_all_menu:
-                    listItems.clear();
-                    adapter.notifyDataSetChanged();
-                    break;
-            }
-
-            // close the drawer
-            drawerLayout.closeDrawers();
-            // tell the OS
-            return true;
+            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
         }
     }
 }
