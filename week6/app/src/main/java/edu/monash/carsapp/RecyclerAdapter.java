@@ -1,5 +1,6 @@
 package edu.monash.carsapp;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,15 +30,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return new ViewHolder(v);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         viewHolder.itemModel.setText(data.get(position).getModel());
         viewHolder.itemMaker.setText(data.get(position).getMaker());
         viewHolder.itemYear.setText(data.get(position).getYear());
-        viewHolder.itemColor.setText(data.get(position).getColor());
-        viewHolder.itemSeats.setText(data.get(position).getSeats());
-        viewHolder.itemPrice.setText(data.get(position).getPrice() + "");
-
+        viewHolder.itemColor.setText("Color: " + data.get(position).getColor());
+        viewHolder.itemSeats.setText("Seats: " + data.get(position).getSeats());
+        viewHolder.itemPrice.setText("$" + data.get(position).getPrice());
 
         //a class declared in a method (so called local or anonymous class can only access the method's local variables if they are declared final (1.8 or are effectively final)
         //this has to do with Java closures

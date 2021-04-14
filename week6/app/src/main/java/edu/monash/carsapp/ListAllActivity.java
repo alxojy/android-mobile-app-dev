@@ -1,5 +1,6 @@
 package edu.monash.carsapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,9 +28,10 @@ public class ListAllActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);  //A RecyclerView.LayoutManager implementation which provides similar functionality to ListView.
         recyclerView.setLayoutManager(layoutManager);
 
-        String carsString = getIntent().getExtras().getString("cars");
-        Gson gson = new Gson();
+        SharedPreferences sp = getSharedPreferences("LIST_ALL_ACTIVITY", 0);
+        String carsString = sp.getString("CARS_LIST","");
         Type type = new TypeToken<ArrayList<Car>>(){}.getType();
+        Gson gson = new Gson();
         ArrayList<Car> cars = gson.fromJson(carsString,type);
 
         adapter = new RecyclerAdapter(cars);

@@ -20,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.SharedPreferences;
 import com.google.gson.Gson;
+
+import java.util.List;
 import java.util.StringTokenizer;
 
 import android.widget.ArrayAdapter;
@@ -48,14 +50,12 @@ public class MainActivity extends AppCompatActivity {
     private EditText seatsEditText;
     private EditText priceEditText;
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
     Toolbar toolbar;
     FloatingActionButton fab;
 
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayList<Car> cars = new ArrayList<>();
     ArrayAdapter<String> adapter;
-    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         priceEditText = (EditText)findViewById(R.id.priceEditText);
 
         toolbar = findViewById(R.id.toolbar);
-        navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         drawerLayout = findViewById(R.id.drawer_layout);
 
         setSupportActionBar(toolbar);
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        listView =  findViewById(R.id.listView);
+        ListView listView = findViewById(R.id.listView);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         listView.setAdapter(adapter);
 
@@ -166,11 +166,13 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.remove_last_menu:
                     if (listItems.size() > 0) {
                         listItems.remove(listItems.size()-1);
+                        cars.remove(cars.size()-1);
                         adapter.notifyDataSetChanged();
                     }
                     break;
                 case R.id.remove_all_menu:
                     listItems.clear();
+                    cars.clear();
                     adapter.notifyDataSetChanged();
                     break;
                 case R.id.list_all_menu:
@@ -186,10 +188,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openListAllActivity() {
-        Intent intent = new Intent(this, ListAllActivity.class);
         Gson gson = new Gson();
         String carString = gson.toJson(cars);
-        intent.putExtra("cars", carString);
+        SharedPreferences sp = getSharedPreferences("LIST_ALL_ACTIVITY", 0);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString("CARS_LIST", carString);
+        edit.apply();
+
+        Intent intent = new Intent(this, ListAllActivity.class);
         startActivity(intent);
     }
 
