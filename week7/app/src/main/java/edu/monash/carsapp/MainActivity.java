@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton fab;
 
-    ListViewAdapter adapter;
     CarViewModel carViewModel;
 
     @Override
@@ -97,15 +96,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ListView listView = findViewById(R.id.listView);
-        adapter = new ListViewAdapter(this);
-        listView.setAdapter(adapter);
-
         carViewModel = new ViewModelProvider(this).get(CarViewModel.class);
-        carViewModel.getAllCars().observe(this, newData -> {
-            adapter.setCars(newData);
-            adapter.notifyDataSetChanged();
-        });
 
         // restore saved preferences
         onRestoreSharedPreferences();
@@ -168,10 +159,10 @@ public class MainActivity extends AppCompatActivity {
                     addNewCar();
                     break;
                 case R.id.remove_last_menu:
-                    int carId = adapter.getLastElemId();
+                    /*int carId = adapter.getLastElemId();
                     if (carId != -1) {
                         carViewModel.deleteCar(carId);
-                    }
+                    }*/
                     break;
                 case R.id.remove_all_menu:
                     carViewModel.deleteAll();
