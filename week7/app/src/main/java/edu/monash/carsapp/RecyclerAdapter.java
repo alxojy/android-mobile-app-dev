@@ -14,17 +14,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.monash.carsapp.provider.Car;
+import edu.monash.carsapp.provider.CarViewModel;
 
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     List<Car> data;
+    CarViewModel carViewModel;
+
+    RecyclerAdapter(CarViewModel viewModel) {
+        carViewModel = viewModel;
+    }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_layout, viewGroup, false); //CardView inflated as RecyclerView list item
-
         return new ViewHolder(v);
     }
 
@@ -47,6 +52,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() { //set back to itemView for students
             @Override
             public void onClick(View v) {
+                carViewModel.deleteCar(model);
                 Toast.makeText(v.getContext(), "Car no " + fPosition + " with name " + maker + " and model " + model, Toast.LENGTH_SHORT).show();
             }
         });

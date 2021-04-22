@@ -31,9 +31,9 @@ public class CarRepository {
         CarDatabase.databaseWriteExecutor.execute(carDao::deleteAllCars);
     }
 
-    void deleteCar(int id) {
+    void deleteCar(String model) {
         CarDatabase.databaseWriteExecutor.execute(() -> {
-            carDao.deleteCar(id);
+            carDao.deleteCar(model);
         });
     }
 }

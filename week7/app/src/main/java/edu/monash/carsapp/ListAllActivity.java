@@ -36,11 +36,11 @@ public class ListAllActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);  //A RecyclerView.LayoutManager implementation which provides similar functionality to ListView.
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new RecyclerAdapter();
+        carViewModel = new ViewModelProvider(this).get(CarViewModel.class);
+        adapter = new RecyclerAdapter(carViewModel);
         // assign (i.e. set) the adapter to the recycler view
         recyclerView.setAdapter(adapter);
 
-        carViewModel = new ViewModelProvider(this).get(CarViewModel.class);
         carViewModel.getAllCars().observe(this, newData -> {
             adapter.setCars(newData);
             adapter.notifyDataSetChanged();

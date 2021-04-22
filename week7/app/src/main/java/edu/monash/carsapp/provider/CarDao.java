@@ -19,8 +19,8 @@ public interface CarDao {
     @Insert
     void addCar(Car car);
 
-    @Query("delete from cars where carId=:id")
-    void deleteCar(int id);
+    @Query("delete from cars where model=:carModel")
+    void deleteCar(String carModel);
 
     @Query("delete from cars")
     void deleteAllCars();
