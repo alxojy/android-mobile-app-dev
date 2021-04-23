@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:fillViewport="true"
+    android:layout_height="match_parent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".MainActivity">
+
+        <EditText
+            android:id="@+id/makerEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:ems="15"
+            android:hint="@string/maker"
+            android:autofillHints=""
+            android:inputType="textPersonName"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/makerTextView"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_guideline" />
+
+        <EditText
+            android:id="@+id/modelEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:ems="15"
+            android:hint="@string/model"
+            android:autofillHints=""
+            android:inputType="textPersonName"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/modelTextView"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_guideline" />
+
+        <EditText
+            android:id="@+id/yearEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:ems="15"
+            android:hint="@string/year"
+            android:autofillHints=""
+            android:inputType="number"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/yearTextView"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_guideline" />
+
+        <EditText
+            android:id="@+id/colorEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:ems="15"
+            android:hint="@string/color"
+            android:autofillHints=""
+            android:inputType="textPersonName"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/colorTextView"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_guideline" />
+
+        <EditText
+            android:id="@+id/seatsEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:ems="15"
+            android:hint="@string/seats"
+            android:autofillHints=""
+            android:inputType="number"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/seatsTextView"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_guideline" />
+
+        <EditText
+            android:id="@+id/priceEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:ems="15"
+            android:hint="@string/price"
+            android:autofillHints=""
+            android:inputType="number"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/priceTextView"
+            app:layout_constraintStart_toStartOf="@+id/edit_text_guideline" />
+
+        <TextView
+            android:id="@+id/titleName"
+            android:layout_width="wrap_content"
+            android:layout_height="19dp"
+            android:layout_marginTop="65dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/app_name_user"
+            app:layout_constraintBottom_toTopOf="@+id/makerEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/makerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:text="@string/maker"
+            app:layout_constraintStart_toStartOf="@+id/field_guideline"
+            app:layout_constraintTop_toTopOf="@+id/guideline1" />
+
+        <TextView
+            android:id="@+id/modelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:text="@string/model"
+            app:layout_constraintStart_toStartOf="@+id/field_guideline"
+            app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+        <TextView
+            android:id="@+id/yearTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:text="@string/year"
+            app:layout_constraintStart_toStartOf="@+id/field_guideline"
+            app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+        <TextView
+            android:id="@+id/colorTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:text="@string/color"
+            app:layout_constraintStart_toStartOf="@+id/field_guideline"
+            app:layout_constraintTop_toTopOf="@+id/guideline4" />
+
+        <TextView
+            android:id="@+id/seatsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:text="@string/seats"
+            app:layout_constraintStart_toStartOf="@+id/field_guideline"
+            app:layout_constraintTop_toTopOf="@+id/guideline5" />
+
+        <TextView
+            android:id="@+id/priceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:text="@string/price"
+            app:layout_constraintStart_toStartOf="@+id/field_guideline"
+            app:layout_constraintTop_toTopOf="@+id/guideline6" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/field_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/edit_text_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/hor_cen_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.12" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.18" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.24" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.30" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.36" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.42" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.48" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
