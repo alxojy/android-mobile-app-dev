@@ -76,4 +76,15 @@
         android:layout_marginTop="20dp"
         android:onClick="refresh" />
 
+    <Button
+        android:id="@+id/add_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Car"
+        android:layout_marginStart="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/refresh"
+        android:layout_marginTop="20dp"
+        android:onClick="addCar" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

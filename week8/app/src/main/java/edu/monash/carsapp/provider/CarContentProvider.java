@@ -12,10 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class CarContentProvider extends ContentProvider {
-    public static final String CONTENT_AUTHORITY = "fit2081.tasks.db.provider";
+    public static final String CONTENT_AUTHORITY = "fit2081.app.megan";
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
-
 
     private static final int MULTIPLE_ROWS_TASKS = 1;
     private static final int SINGLE_ROW_TASKS = 2;

@@ -47,4 +47,16 @@ public class MainActivity extends AppCompatActivity {
         int values = getContentResolver().delete(uri, "year < ?", args);
         Toast.makeText(v.getContext(), values + " cars deleted", Toast.LENGTH_SHORT).show();
     }
+
+    public void addCar(View v) {
+        ContentValues values = new ContentValues();
+        values.put("maker", "Toyota");
+        values.put("model", "Vios");
+        values.put("year", "2020");
+        values.put("color", "white");
+        values.put("seats", "5");
+        values.put("price", "80000");
+        Uri uri2 = getContentResolver().insert(uri, values);
+        Toast.makeText(this,uri2.toString(),Toast.LENGTH_LONG).show();
+    }
 }
