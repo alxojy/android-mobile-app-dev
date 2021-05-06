@@ -7,7 +7,10 @@ import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
 //import android.support.v4.app.FragmentActivity;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -63,7 +66,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 boolean actionFlag;
                 String selectedCountry = "";
 
-
                 List<Address> addresses = new ArrayList<>();
                 try {
                     //The results of getFromLocation are a best guess and are not guaranteed to be meaningful or correct.
@@ -85,6 +87,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     actionFlag = true;
                 }
 
+                Toast t = Toast.makeText(getApplicationContext(), "PostCode: " + addresses.get(0).getPostalCode(), Toast.LENGTH_LONG);
+                t.setGravity(Gravity.TOP, 0, 0);
+                t.show();
                 Snackbar.make(mapFragment.getView(), msg, Snackbar.LENGTH_LONG).setAction("Details", (actionFlag) ? (new ActionOnClickListener(selectedCountry)) : null).show();
             }
         });

@@ -34,6 +34,7 @@ public class CountryDetails extends AppCompatActivity {
     private TextView area;
     private TextView currencies;
     private TextView languages;
+    private TextView region;
     private ImageView flag;
     private Button button;
     @Override
@@ -55,6 +56,7 @@ public class CountryDetails extends AppCompatActivity {
         currencies = findViewById(R.id.currencies);
         languages = findViewById(R.id.languages);
         flag = findViewById(R.id.imageView);
+        region = findViewById(R.id.region);
         button = findViewById(R.id.button);
 
         new GetCountryDetails().execute(selectedCountry);
@@ -110,6 +112,9 @@ public class CountryDetails extends AppCompatActivity {
                                     break;
                                 case "area":
                                     countryInfo.setArea(jsonReader.nextDouble());
+                                    break;
+                                case "region":
+                                    countryInfo.setRegion(jsonReader.nextString());
                                     break;
                                 case "currencies":
                                     ArrayList<String> currencies = new ArrayList<String>();
@@ -176,9 +181,11 @@ public class CountryDetails extends AppCompatActivity {
             area.setText(Double.toString(countryInfo.getArea()));
             currencies.setText(countryInfo.getCurrencies().stream().collect(Collectors.joining(", ")));
             languages.setText(countryInfo.getLanguages().stream().collect(Collectors.joining(", ")));
+            region.setText(countryInfo.getRegion());
             button.setText("Wiki "  + countryInfo.getName());
 
-            String url = "https://www.countryflags.io/" + countryInfo.getAlpha2Code() + "/flat/64.png";
+            //String url = "https://www.countryflags.io/" + countryInfo.getAlpha2Code() + "/flat/64.png";
+            String url = "https://flagcdn.com/144x108/" + countryInfo.getAlpha2Code().toLowerCase() + ".png";
             new FlagImage(flag).execute(url);
         }
     }
@@ -240,6 +247,7 @@ public class CountryDetails extends AppCompatActivity {
         private double area;
         private ArrayList<String> currencies = new ArrayList<String>();
         private ArrayList<String> languages = new ArrayList<String>();
+        private String region;
 
         public String getName() {
             return name;
@@ -303,6 +311,14 @@ public class CountryDetails extends AppCompatActivity {
 
         public void setLanguages(ArrayList<String> languages) {
             this.languages = languages;
+        }
+
+        public void setRegion(String region) {
+            this.region = region;
+        }
+
+        public String getRegion() {
+            return region;
         }
     }
 }

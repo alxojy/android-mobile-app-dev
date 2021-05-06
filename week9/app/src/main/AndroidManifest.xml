@@ -44,12 +44,14 @@
         </activity>
         <activity
             android:name=".CountryDetails"
+            android:launchMode="singleTop"
             android:parentActivityName=".MapsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MapsActivity" />
         </activity>
-        <activity android:name=".WebWiki">
+        <activity android:name=".WebWiki"
+            android:parentActivityName=".CountryDetails">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CountryDetails" />
