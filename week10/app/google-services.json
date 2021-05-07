@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "610079451496",
+    "project_id": "carsapp-8a271",
+    "storage_bucket": "carsapp-8a271.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610079451496:android:50d8e219b6f9c3a8630edd",
+        "android_client_info": {
+          "package_name": "edu.monash.carsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "610079451496-5e4j5hu6mgh8f75hun5oe3p7quu32ivc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXzJqUu11K8x_rNRplCv9bvzHsuntdsY0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "610079451496-5e4j5hu6mgh8f75hun5oe3p7quu32ivc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
