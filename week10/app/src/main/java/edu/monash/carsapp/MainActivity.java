@@ -3,6 +3,7 @@ package edu.monash.carsapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.solver.state.Dimension;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -14,8 +15,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Point;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.view.View;
@@ -61,8 +66,10 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
     private int x, y, newX, newY;
-    private final int X_DIST = 100;
-    private final int Y_DIST = 100;
+    private final int X_MAX = 300;
+    private final int Y_MAX = 300;
+    private final int X_MIN = 40;
+    private final int Y_MIN = 40;
 
     Toolbar toolbar;
     FloatingActionButton fab;
@@ -116,6 +123,10 @@ public class MainActivity extends AppCompatActivity {
         // register broadcast handler with intent filter
         registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.SMS_FILTER));
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getApplicationContext().getDisplay().getRealMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+
         View mainLayout = findViewById(R.id.main_layout);
         mainLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -125,6 +136,12 @@ public class MainActivity extends AppCompatActivity {
                     case (MotionEvent.ACTION_DOWN):
                         x = (int)event.getX();
                         y = (int)event.getY();
+                        if (0 <= x && x <= 200 && 0 <= y && y <= 200) {
+                            priceEditText.setText(Math.max(0, Integer.parseInt(priceEditText.getText().toString().trim()) - 50) + "");
+                        }
+                        else if (width - 200 <= x && x <= width && 0 <= y && y <= 200) {
+                            priceEditText.setText((Integer.parseInt(priceEditText.getText().toString().trim()) + 50) + "");
+                        }
                         return true;
                     case (MotionEvent.ACTION_MOVE):
                         return true;
@@ -132,11 +149,11 @@ public class MainActivity extends AppCompatActivity {
                         newX = (int)event.getX();
                         newY = (int)event.getY();
                         // swipe right
-                        if ((newX - x > X_DIST) && (Math.abs(newY - y) < Y_DIST)) {
+                        if ((newX - x > X_MAX) && (Math.abs(newY - y) < Y_MIN)) {
                             addNewCar();
                         }
                         // swipe down
-                        else if ((Math.abs(newX - x) < X_DIST) && (newY - y > Y_DIST)) {
+                        else if ((Math.abs(newX - x) < X_MIN) && (newY - y > Y_MAX)) {
                             clearAll();
                         }
                         return true;

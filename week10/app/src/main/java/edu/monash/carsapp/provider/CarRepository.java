@@ -21,32 +21,14 @@ public class CarRepository {
 
     private final CarDao carDao;
     private final LiveData<List<Car>> allCars;
-    private final DatabaseReference carsRef;
+    //private final DatabaseReference carsRef;
 
     CarRepository(Application application) {
         CarDatabase db = CarDatabase.getDatabase(application);
         carDao = db.carDao();
         allCars = carDao.getAllCars();
 
-        carsRef = FirebaseDatabase.getInstance().getReference().child("Car");
-
-        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
-        connectedRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                boolean connected = snapshot.getValue(Boolean.class);
-                if (connected) {
-                    Log.d("i", "connected");
-                } else {
-                    Log.d("i", "not connected");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("i", "Listener was cancelled");
-            }
-        });
+        //carsRef = FirebaseDatabase.getInstance().getReference().child("Car");
     }
 
     LiveData<List<Car>> getAllCars() {
@@ -57,12 +39,12 @@ public class CarRepository {
         CarDatabase.databaseWriteExecutor.execute(() -> {
             carDao.addCar(car);
         });
-        carsRef.push().setValue(car);
+        //carsRef.push().setValue(car);
     }
 
     void deleteAll() {
         CarDatabase.databaseWriteExecutor.execute(carDao::deleteAllCars);
-        carsRef.removeValue();
+        //carsRef.removeValue();
     }
 
     void deleteCar(String model) {
