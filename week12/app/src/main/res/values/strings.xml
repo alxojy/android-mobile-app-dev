@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Cars App</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="maker">Maker</string>
+    <string name="model">Model</string>
+    <string name="year">Year</string>
+    <string name="color">Color</string>
+    <string name="seats">Seats</string>
+    <string name="price">Price</string>
+    <string name="app_name_user">Cars App (Megan, 30101670)</string>
+</resources>
