@@ -3,12 +3,10 @@ package edu.monash.carsapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.solver.state.Dimension;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
@@ -16,14 +14,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Point;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.view.View;
@@ -32,15 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.SharedPreferences;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
-
 import java.util.StringTokenizer;
-
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import java.util.ArrayList;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -82,7 +68,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private final String SEATS = "5";
     private final String PRICE = "1500";
 
-    private GestureDetectorCompat detector;
+    private GestureDetectorCompat gestureDetector;
+    private ScaleGestureDetector scaleDetector;
 
     Toolbar toolbar;
     FloatingActionButton fab;
@@ -137,47 +124,19 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         registerReceiver(myBroadCastReceiver, new IntentFilter(SMSReceiver.SMS_FILTER));
 
         GestureListener gestureListener = new GestureListener();
-        detector = new GestureDetectorCompat(this, gestureListener);
+        gestureDetector = new GestureDetectorCompat(this, gestureListener);
+
+        ScaleListener scaleListener= new ScaleListener();
+        scaleDetector = new ScaleGestureDetector(this, scaleListener);
 
         View mainLayout = findViewById(R.id.main_layout);
         mainLayout.setOnTouchListener(this);
-
-        /*
-        View mainLayout = findViewById(R.id.main_layout);
-        mainLayout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getActionMasked();
-                switch(action) {
-                    case (MotionEvent.ACTION_DOWN):
-                        x = (int)event.getX();
-                        y = (int)event.getY();
-                        return true;
-                    case (MotionEvent.ACTION_MOVE):
-                        return true;
-                    case (MotionEvent.ACTION_UP):
-                        newX = (int)event.getX();
-                        newY = (int)event.getY();
-                        // swipe right
-                        if ((newX - x > X_MAX) && (Math.abs(newY - y) < Y_MIN)) {
-                            addNewCar();
-                        }
-                        // swipe down
-                        else if ((Math.abs(newX - x) < X_MIN) && (newY - y > Y_MAX)) {
-                            clearAll();
-                        }
-                        return true;
-                    default :
-                        return false;
-                }
-            }
-        });
-        */
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        detector.onTouchEvent(event);
+        gestureDetector.onTouchEvent(event);
+        scaleDetector.onTouchEvent(event);
         return true;
     }
 
@@ -240,6 +199,28 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         @Override
         public void onLongPress(MotionEvent e) {
             clearAll();
+        }
+    }
+
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            float scaleFactor = detector.getScaleFactor();
+
+            // zoom in - increase year
+            if (scaleFactor > 1) {
+                yearEditText.setText("" + (Integer.parseInt(yearEditText.getText().toString().trim()) + 1));
+            }
+            // zoom out - decrease year
+            else {
+                yearEditText.setText("" + (Integer.parseInt(yearEditText.getText().toString().trim()) - 1));
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+            return true;
         }
     }
 
